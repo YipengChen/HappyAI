@@ -1,10 +1,10 @@
 import cv2
 import sys
 sys.path.append("..")
-from base_ai.face_ai import FaceMesh
+from base_ai.holistic_ai import HolisticDetection
 
 cap = cv2.VideoCapture(0)
-face_mesh = FaceMesh()
+holistic_detection = HolisticDetection()
 
 while cap.isOpened():
   
@@ -14,10 +14,10 @@ while cap.isOpened():
         continue
 
     image = cv2.flip(image, 1)
-    results = face_mesh.inference(image)
-    image = face_mesh.draw(image, results)
+    results = holistic_detection.inference(image)
+    image = holistic_detection.draw(image, results)
     
-    cv2.imshow('Face Mesh', image)
+    cv2.imshow('Holistic Detection', image)
     if cv2.waitKey(5) & 0xFF == 27:
         break
 
