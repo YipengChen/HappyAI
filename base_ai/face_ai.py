@@ -45,6 +45,23 @@ class FaceMesh(object):
                 self.draw_engine.draw_landmarks(image=image, landmark_list=face_landmarks, connections=mp.solutions.face_mesh.FACE_CONNECTIONS, landmark_drawing_spec=drawing_spec, connection_drawing_spec=drawing_spec)
         return image
 
+    def get_lip_location(sell, results, image_shape):
+        # Clockwise
+        upper_lip_index = [61, 185, 40, 39, 37, 0, 267, 269, 270, 409, 291, 306, 292, 308, 415, 310, 311, 312, 13, 82, 81, 80, 191, 78, 62, 76]
+        lower_lip_index = [61, 72, 62, 78, 95, 88, 178, 87, 14, 317, 402, 318, 324, 308, 292, 306, 291, 375, 321, 405, 314, 17, 84, 181, 91, 146]
+
+        # 只选取第一个人脸
+        face_landmarks = []
+        if results.multi_face_landmarks:
+            landmarks = results.multi_face_landmarks[0]
+            x = [landmark.x for landmark in landmarks.landmark]
+            y = [landmark.y for landmark in landmarks.landmark]
+            face_landmarks = np.transpose(np.stack((x, y))) * [image_shape[1], image_shape[0]]
+            face_landmarks = face_landmarks.astype(np.int32)
+            return face_landmarks[upper_lip_index], face_landmarks[lower_lip_index]
+
+        return None, None
+
     def mouth_opened_detection(self, results, image_shape, threshold=0.2):
         # Clockwise
         mouth_feature_index = [78, 82, 312, 308, 317, 87]
