@@ -62,6 +62,22 @@ class FaceMesh(object):
 
         return None, None
 
+    def get_mask_location(self, results, image_shape):
+        # Clockwise
+        #mask_index = [93, 6, 323, 365, 152, 136]
+        mask_index = [118, 197, 347, 422, 152, 202]
+
+        # 只选取第一个人脸
+        face_landmarks = []
+        if results.multi_face_landmarks:
+            landmarks = results.multi_face_landmarks[0]
+            x = [landmark.x for landmark in landmarks.landmark]
+            y = [landmark.y for landmark in landmarks.landmark]
+            face_landmarks = np.transpose(np.stack((x, y))) * [image_shape[1], image_shape[0]]
+            return face_landmarks[mask_index]
+        
+        return None
+
     def mouth_opened_detection(self, results, image_shape, threshold=0.2):
         # Clockwise
         mouth_feature_index = [78, 82, 312, 308, 317, 87]
