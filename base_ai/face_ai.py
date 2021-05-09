@@ -152,8 +152,8 @@ class FaceMesh(object):
 
             left_eye_feature_location = face_landmarks[left_eye_feature_index]
             right_eye_feature_location = face_landmarks[right_eye_feature_index]
-            left_eye_center_location = np.mean(left_eye_feature_location, axis=0)
-            right_eye_center_location = np.mean(right_eye_feature_location, axis=0)
+            left_eye_center_location = np.mean(left_eye_feature_location, axis=0).astype(np.int)
+            right_eye_center_location = np.mean(right_eye_feature_location, axis=0).astype(np.int)
 
             r_max = int(self.calculation_distance(left_eye_feature_location, right_eye_feature_location) / 4)
 
@@ -177,24 +177,19 @@ class FaceMesh(object):
             '''
 
             # quick
-            x_grid, y_grid = np.meshgrid(np.arange(0, image.shape[0], 1), np.arange(0, image.shape[1], 1), indexing='ij')
-            xy_grid = np.transpose(np.stack((x_grid.flatten(), y_grid.flatten())))
-            
-            left_eye_distances = np.linalg.norm(left_eye_center_location - xy_grid, axis=1)
-            left_eye_indexs = (left_eye_distances < r_max)
-            enlarge_factors = 1.0 - np.power((left_eye_distances[left_eye_indexs]/r_max -1.0),2.0) * enlarge_factor
-            enlarge_factors = np.transpose(np.stack((enlarge_factors,enlarge_factors)))
-            left_eye_new_locations = (left_eye_center_location + (xy_grid[left_eye_indexs] - left_eye_center_location) * enlarge_factors).astype(np.int)
-            left_vaild_indexs = (left_eye_new_locations[:, 0] < image.shape[0]) * (left_eye_new_locations[:, 1] < image.shape[1])
-            new_image[xy_grid[left_eye_indexs][left_vaild_indexs, 0], xy_grid[left_eye_indexs][left_vaild_indexs, 1]] = image[left_eye_new_locations[left_vaild_indexs, 0], left_eye_new_locations[left_vaild_indexs, 1]]
-
-            right_eye_distances = np.linalg.norm(right_eye_center_location - xy_grid, axis=1)
-            right_eye_indexs = (right_eye_distances < r_max)
-            enlarge_factors = 1.0 - np.power((right_eye_distances[right_eye_indexs]/r_max -1.0),2.0) * enlarge_factor
-            enlarge_factors = np.transpose(np.stack((enlarge_factors,enlarge_factors)))
-            right_eye_new_locations = (right_eye_center_location + (xy_grid[right_eye_indexs] - right_eye_center_location) * enlarge_factors).astype(np.int)
-            right_vaild_indexs = (right_eye_new_locations[:, 0] < image.shape[0]) * (right_eye_new_locations[:, 1] < image.shape[1])
-            new_image[xy_grid[right_eye_indexs][right_vaild_indexs, 0], xy_grid[right_eye_indexs][right_vaild_indexs, 1]] = image[right_eye_new_locations[right_vaild_indexs, 0], right_eye_new_locations[right_vaild_indexs, 1]]
+            for eye_center_location in [left_eye_center_location, right_eye_center_location]:
+                x_grid_range = np.arange(max(eye_center_location[0]-r_max, 0), min(eye_center_location[0]+r_max+1, image.shape[0]), 1)
+                y_grid_range = np.arange(max(eye_center_location[1]-r_max, 0), min(eye_center_location[1]+r_max+1, image.shape[1]), 1)
+                x_grid, y_grid = np.meshgrid(x_grid_range, y_grid_range, indexing='ij')
+                xy_grid = np.transpose(np.stack((x_grid.flatten(), y_grid.flatten())))
+                
+                eye_distances = np.linalg.norm(eye_center_location - xy_grid, axis=1)
+                eye_indexs = (eye_distances < r_max)
+                enlarge_factors = 1.0 - np.power((eye_distances[eye_indexs]/r_max -1.0),2.0) * enlarge_factor
+                enlarge_factors = np.transpose(np.stack((enlarge_factors,enlarge_factors)))
+                eye_new_locations = (eye_center_location + (xy_grid[eye_indexs] - eye_center_location) * enlarge_factors).astype(np.int)
+                vaild_indexs = (eye_new_locations[:, 0] < image.shape[0]) * (eye_new_locations[:, 1] < image.shape[1])
+                new_image[xy_grid[eye_indexs][vaild_indexs, 0], xy_grid[eye_indexs][vaild_indexs, 1]] = image[eye_new_locations[vaild_indexs, 0], eye_new_locations[vaild_indexs, 1]]
 
         return new_image
 

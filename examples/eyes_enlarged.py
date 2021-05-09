@@ -15,7 +15,6 @@ while cap.isOpened():
         print("Ignoring empty camera frame.")
         continue
 
-    image = cv2.resize(image, (640, 360))
     image = cv2.flip(image, 1)
     results = face_mesh.inference(image)
     
