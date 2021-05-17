@@ -4,8 +4,8 @@ sys.path.append("..")
 from base_ai.style_transfer_ai import StyleTransfer
 
 cap = cv2.VideoCapture(0)
-# mosaic, candy, rain-princess, udnie, pointilism
-style_transfer = StyleTransfer(style='rain-princess')
+# mosaic, candy, rain-princess, udnie, pointilism, cartoon
+style_transfer = StyleTransfer(style='cartoon')
 
 while cap.isOpened():
   
