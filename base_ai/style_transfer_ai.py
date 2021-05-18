@@ -34,8 +34,7 @@ class StyleTransfer(object):
             results = (results + 1) * 127.5
             results = np.clip(results, 0, 255)
             results = results.squeeze().transpose(1,2,0).astype("uint8")
-            #return cv2.ximgproc.guidedFilter(image,results,1,100)
-            return results
+            return cv2.ximgproc.guidedFilter(image,results,1,127*127*5e-3)
         else:
             blob = cv2.dnn.blobFromImage(image, 1/255)
             self.inference_engine.setInput(blob)
