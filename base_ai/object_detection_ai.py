@@ -37,13 +37,20 @@ class ObjectDetection_20class(object):
 
 class ObjectDetection_80class(object):
 
-    def __init__(self, method='opencv_dnn', confidence_threshold=0.25, nms_threshold=0.4):
+    def __init__(self, method='opencv_dnn', model_name='yolov4-tiny', confidence_threshold=0.25, nms_threshold=0.4):
         if method == 'opencv_dnn':
-            cfg_file = '../models/yolov4-tiny.cfg'
-            weights_file = '../models/yolov4-tiny.weights'
-            net = cv2.dnn.readNet(weights_file, cfg_file)
-            model = cv2.dnn_DetectionModel(net)
-            model.setInputParams(size=(416, 416), scale=1/255, swapRB=True)
+            if model_name == 'yolov4-tiny':
+                cfg_file = '../models/yolov4-tiny.cfg'
+                weights_file = '../models/yolov4-tiny.weights'
+                net = cv2.dnn.readNet(weights_file, cfg_file)
+                model = cv2.dnn_DetectionModel(net)
+                model.setInputParams(size=(416, 416), scale=1/255, swapRB=True)
+            elif model_name == 'yolo-fastest':
+                cfg_file = '../models/yolo-fastest-1.1.cfg'
+                weights_file = '../models/yolo-fastest-1.1.weights'
+                net = cv2.dnn.readNet(weights_file, cfg_file)
+                model = cv2.dnn_DetectionModel(net)
+                model.setInputParams(size=(320, 320), scale=1/255, swapRB=True)
             self.inference_engine = model
         self.method = method
         with open("../models/coco.names", "r") as f:
