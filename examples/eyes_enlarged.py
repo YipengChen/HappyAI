@@ -1,6 +1,7 @@
 import cv2
 import sys
-sys.path.append("..")
+from os import path   
+sys.path.append(path.dirname(path.dirname(__file__)))
 from base_ai.face_ai import FaceMesh
 
 cap = cv2.VideoCapture(0)
@@ -18,7 +19,7 @@ while cap.isOpened():
     image = cv2.flip(image, 1)
     results = face_mesh.inference(image)
     
-    enlarged_image = face_mesh.eyes_enlarged(results, image, enlarge_factor=0.5)
+    enlarged_image = face_mesh.eyes_enlarged(results, image, enlarge_factor=1)
 
     cv2.imshow('Eyes Enlarged', enlarged_image)
     if cv2.waitKey(5) & 0xFF == 27:

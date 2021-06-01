@@ -1,6 +1,7 @@
 import cv2
 import sys
-sys.path.append("..")
+from os import path   
+sys.path.append(path.dirname(path.dirname(__file__)))
 from base_ai.style_transfer_ai import StyleTransfer
 
 cap = cv2.VideoCapture(0)

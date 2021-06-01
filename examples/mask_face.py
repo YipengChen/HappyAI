@@ -1,6 +1,7 @@
 import cv2
 import sys
-sys.path.append("..")
+from os import path   
+sys.path.append(path.dirname(path.dirname(__file__)))
 from base_ai.face_ai import FaceMesh
 import numpy as np
 
