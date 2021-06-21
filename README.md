@@ -26,6 +26,7 @@
 * 人体综合检测（脸部关键点+手部关键点+人体关键点）
 * 20类、80类常用物体检测
 * 卡通风格转换
+* 人像分割
 
 ## 体验demo
 * 摄像头测试 （python3 examples/camera_read.py）
@@ -41,6 +42,7 @@
 * 闭眼检测 （python3 examples/eyes_closed_detection.py）
 * 张嘴检测（python3 examples/mouth_opened_detection.py）
 * 虚拟口罩（python3 examples/mask_face.py）
+* 自拍人像分割（python3 python3 examples/selfie_segmentation.py）
 
 
 
