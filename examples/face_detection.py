@@ -2,7 +2,7 @@ import cv2
 import sys
 from os import path   
 sys.path.append(path.dirname(path.dirname(__file__)))
-from base_ai.face_ai import FaceDetection
+from base_ai.face.face_detection import FaceDetection
 
 cap = cv2.VideoCapture(0)
 face_detection = FaceDetection()

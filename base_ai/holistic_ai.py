@@ -17,7 +17,7 @@ class HolisticDetection(object):
 
     def draw(self, image, results):
         image = image.copy()
-        self.draw_engine.draw_landmarks(image, results.face_landmarks, mp.solutions.holistic.FACE_CONNECTIONS)
+        self.draw_engine.draw_landmarks(image, results.face_landmarks, mp.solutions.holistic.FACEMESH_TESSELATION)
         self.draw_engine.draw_landmarks(image, results.left_hand_landmarks, mp.solutions.holistic.HAND_CONNECTIONS)
         self.draw_engine.draw_landmarks(image, results.right_hand_landmarks, mp.solutions.holistic.HAND_CONNECTIONS)
         self.draw_engine.draw_landmarks(image, results.pose_landmarks, mp.solutions.holistic.POSE_CONNECTIONS)

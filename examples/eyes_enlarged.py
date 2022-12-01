@@ -2,12 +2,10 @@ import cv2
 import sys
 from os import path   
 sys.path.append(path.dirname(path.dirname(__file__)))
-from base_ai.face_ai import FaceMesh
+from base_ai.face.face_mesh import FaceMesh
 
 cap = cv2.VideoCapture(0)
 face_mesh = FaceMesh()
-last_eyes_closed_flag = False
-eyes_closed_count = 0
 
 while cap.isOpened():
   

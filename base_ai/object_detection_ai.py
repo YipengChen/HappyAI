@@ -66,7 +66,6 @@ class ObjectDetection_80class(object):
     def draw(self, image, results, confidence_threshold=0.25):
         classes, scores, boxes = results
         for class_index, score, box in zip(classes, scores, boxes):
-            class_index, score = class_index[0], score[0]
             if score > confidence_threshold:
                 start_x, start_y, width, height = box
                 label = "{}: {:.2f}%".format(self.classes[class_index], score * 100)

@@ -2,35 +2,22 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
+# Method_1: mediapipe, https://github.com/google/mediapipe
+class FaceMeshMediaPipe(object):
 
-class FaceDetection(object):
-
-    def __init__(self, method='mediapipe'):
-        if method == 'mediapipe':
-            self.inference_engine = mp.solutions.face_detection.FaceDetection(min_detection_confidence=0.5)
-            self.draw_engine = mp.solutions.drawing_utils
-        self.method = method
-    
-    def inference(self, image):
-        image = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2RGB)
-        results = self.inference_engine.process(image)
-        return results
-
-    def draw(self, image, results):
-        if results.detections:
-            image = image.copy()
-            for detection in results.detections:
-                self.draw_engine.draw_detection(image, detection)
-        return image
-
-
-class FaceMesh(object):
-
-    def __init__(self, method='mediapipe'):
-        if method == 'mediapipe':
-            self.inference_engine = mp.solutions.face_mesh.FaceMesh(min_detection_confidence=0.5, min_tracking_confidence=0.5)
-            self.draw_engine = mp.solutions.drawing_utils
-        self.method = method
+    def __init__(self):
+        self.static_image_mode = False
+        self.max_num_faces = 1
+        self.refine_landmarks = True
+        self.min_detection_confidence = 0.5
+        self.min_tracking_confidence = 0.5
+        self.inference_engine = mp.solutions.face_mesh.FaceMesh(
+            static_image_mode = self.static_image_mode,
+            max_num_faces = self.max_num_faces,
+            refine_landmarks = self.refine_landmarks,
+            min_detection_confidence=self.min_detection_confidence,
+            min_tracking_confidence=self.min_tracking_confidence)
+        self.draw_engine = mp.solutions.drawing_utils
     
     def inference(self, image):
         image = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2RGB)
@@ -40,9 +27,9 @@ class FaceMesh(object):
     def draw(self, image, results):
         if results.multi_face_landmarks:
             image = image.copy()
-            drawing_spec = self.draw_engine.DrawingSpec(thickness=1, circle_radius=1)
+            drawing_spec = mp.solutions.drawing_styles.get_default_face_mesh_tesselation_style()
             for face_landmarks in results.multi_face_landmarks:
-                self.draw_engine.draw_landmarks(image=image, landmark_list=face_landmarks, connections=mp.solutions.face_mesh.FACE_CONNECTIONS, landmark_drawing_spec=drawing_spec, connection_drawing_spec=drawing_spec)
+                self.draw_engine.draw_landmarks(image=image, landmark_list=face_landmarks, connections=mp.solutions.face_mesh.FACEMESH_TESSELATION, landmark_drawing_spec=None, connection_drawing_spec=drawing_spec)
         return image
 
     def get_lip_location(sell, results, image_shape):
@@ -75,6 +62,23 @@ class FaceMesh(object):
             y = [landmark.y for landmark in landmarks.landmark]
             face_landmarks = np.transpose(np.stack((x, y))) * [image_shape[1], image_shape[0]]
             return face_landmarks[mask_index]
+        
+        return None
+
+    def get_ar_location(self, results, image_shape):
+        ar_keypoint_indices = [127, 93, 58, 136, 150, 149, 176, 148, 152, 377, 400, 378, 379, 365, 288, 323, 356, 70, 63, 105, 66, 55,
+                285, 296, 334, 293, 300, 168, 6, 195, 4, 64, 60, 94, 290, 439, 33, 160, 158, 173, 153, 144, 398, 385,
+                387, 466, 373, 380, 61, 40, 39, 0, 269, 270, 291, 321, 405, 17, 181, 91, 78, 81, 13, 311, 306, 402, 14,
+                178, 162, 54, 67, 10, 297, 284, 389]
+
+        # 只选取第一个人脸
+        face_landmarks = []
+        if results.multi_face_landmarks:
+            landmarks = results.multi_face_landmarks[0]
+            x = [landmark.x for landmark in landmarks.landmark]
+            y = [landmark.y for landmark in landmarks.landmark]
+            face_landmarks = np.transpose(np.stack((x, y))) * [image_shape[1], image_shape[0]]
+            return face_landmarks[ar_keypoint_indices]
         
         return None
 
@@ -196,4 +200,9 @@ class FaceMesh(object):
 
     def calculation_distance(self, point1, point2):
         #return np.sqrt(np.sum(np.square(point1 - point2)))
-        return np.linalg.norm(point1-point2)  
+        return np.linalg.norm(point1-point2)
+
+
+# Choose a method
+class FaceMesh(FaceMeshMediaPipe):
+    pass

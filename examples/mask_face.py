@@ -2,11 +2,13 @@ import cv2
 import sys
 from os import path   
 sys.path.append(path.dirname(path.dirname(__file__)))
-from base_ai.face_ai import FaceMesh
+from base_ai.face.face_mesh import FaceMesh
 import numpy as np
 
 cap = cv2.VideoCapture(0)
 face_mesh = FaceMesh()
+
+# https://learnopencv.com/create-snapchat-instagram-filters-using-mediapipe/
 
 mask_image = cv2.imread('../images/surgical_blue.png', cv2.IMREAD_UNCHANGED)
 #mask_six_points_location = np.array([[39, 92], [311, 18], [586, 85], [593, 302], [304, 503], [27, 299]])
