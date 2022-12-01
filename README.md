@@ -6,7 +6,7 @@
 目前大多数AI项目依赖复杂的环境部署、高性能的GPU计算硬件。本项目旨在集成各类易用的AI基础能力，并基于此开发各类简单有趣的AI应用，力求部署简单，方便体验，让更多的人感受到AI的乐趣。
 
 ## 硬件条件
-* Intel CPU
+* CPU（无需GPU）
 * 摄像头
 
 ## 系统环境
@@ -42,8 +42,12 @@
 * 闭眼检测 （python3 examples/eyes_closed_detection.py）
 * 张嘴检测（python3 examples/mouth_opened_detection.py）
 * 虚拟口罩（python3 examples/mask_face.py）
-* 自拍人像分割（python3 python3 examples/selfie_segmentation.py）
+* 自拍人像分割（python3 examples/selfie_segmentation.py）
+* 虚拟面具（python3 examples/AR_face.py）
 
+
+## 参考
+* https://github.com/spmallick/learnopencv
 
 
 
