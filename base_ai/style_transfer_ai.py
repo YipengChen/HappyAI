@@ -4,12 +4,12 @@ import numpy as np
 class StyleTransfer(object):
 
     style_dict = {
-        'mosaic': '../models/style_transfer/mosaic-9.onnx',
-        'candy': '../models/style_transfer/candy-9.onnx',
-        'rain-princess': '../models/style_transfer/rain-princess-9.onnx',
-        'udnie': '../models/style_transfer/udnie-9.onnx',
-        'pointilism': '../models/style_transfer/pointilism-9.onnx',
-        'cartoon': '../models/style_transfer/cartoon.pb'
+        'mosaic': './models/style_transfer/mosaic-9.onnx',
+        'candy': './models/style_transfer/candy-9.onnx',
+        'rain-princess': './models/style_transfer/rain-princess-9.onnx',
+        'udnie': './models/style_transfer/udnie-9.onnx',
+        'pointilism': './models/style_transfer/pointilism-9.onnx',
+        'cartoon': './models/style_transfer/cartoon.pb'
     }
 
     def __init__(self, style='mosaic', method='opencv_dnn'):

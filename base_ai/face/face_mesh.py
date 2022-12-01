@@ -82,6 +82,21 @@ class FaceMeshMediaPipe(object):
         
         return None
 
+    def get_all_location(self, results, image_shape, has_z=False):
+        # 只选取第一个人脸
+        face_landmarks = []
+        if results.multi_face_landmarks:
+            landmarks = results.multi_face_landmarks[0]
+            x = [landmark.x for landmark in landmarks.landmark]
+            y = [landmark.y for landmark in landmarks.landmark]
+            if has_z:
+                z = [landmark.z for landmark in landmarks.landmark]
+                face_landmarks = np.transpose(np.stack((x, y, z))) * [image_shape[1], image_shape[0], 1000]
+            else:
+                face_landmarks = np.transpose(np.stack((x, y))) * [image_shape[1], image_shape[0]]
+            return np.around(face_landmarks,0)
+        return None
+
     def mouth_opened_detection(self, results, image_shape, threshold=0.2):
         # Clockwise
         mouth_feature_index = [78, 82, 312, 308, 317, 87]

@@ -5,8 +5,8 @@ class ObjectDetection_20class(object):
 
     def __init__(self, method='opencv_dnn'):
         if method == 'opencv_dnn':
-            prototxt_file = '../models/MobileNetSSD_deploy.prototxt'
-            model_file = '../models/MobileNetSSD_deploy.caffemodel'
+            prototxt_file = './models/MobileNetSSD_deploy.prototxt'
+            model_file = './models/MobileNetSSD_deploy.caffemodel'
             self.net = cv2.dnn.readNetFromCaffe(prototxt_file, model_file)
             self.inference_engine = self.net
         self.method = method
@@ -40,20 +40,20 @@ class ObjectDetection_80class(object):
     def __init__(self, method='opencv_dnn', model_name='yolov4-tiny', confidence_threshold=0.25, nms_threshold=0.4):
         if method == 'opencv_dnn':
             if model_name == 'yolov4-tiny':
-                cfg_file = '../models/yolov4-tiny.cfg'
-                weights_file = '../models/yolov4-tiny.weights'
+                cfg_file = './models/yolov4-tiny.cfg'
+                weights_file = './models/yolov4-tiny.weights'
                 net = cv2.dnn.readNet(weights_file, cfg_file)
                 model = cv2.dnn_DetectionModel(net)
                 model.setInputParams(size=(416, 416), scale=1/255, swapRB=True)
             elif model_name == 'yolo-fastest':
-                cfg_file = '../models/yolo-fastest-1.1.cfg'
-                weights_file = '../models/yolo-fastest-1.1.weights'
+                cfg_file = './models/yolo-fastest-1.1.cfg'
+                weights_file = './models/yolo-fastest-1.1.weights'
                 net = cv2.dnn.readNet(weights_file, cfg_file)
                 model = cv2.dnn_DetectionModel(net)
                 model.setInputParams(size=(320, 320), scale=1/255, swapRB=True)
             self.inference_engine = model
         self.method = method
-        with open("../models/coco.names", "r") as f:
+        with open("./models/coco.names", "r") as f:
             self.classes = [cname.strip() for cname in f.readlines()]
         self.colors = np.random.uniform(0, 255, size=(len(self.classes), 3))
         self.confidence_threshold = confidence_threshold

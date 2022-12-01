@@ -10,7 +10,7 @@ face_mesh = FaceMesh()
 
 # https://learnopencv.com/create-snapchat-instagram-filters-using-mediapipe/
 
-mask_image = cv2.imread('../images/surgical_blue.png', cv2.IMREAD_UNCHANGED)
+mask_image = cv2.imread('./images/surgical_blue.png', cv2.IMREAD_UNCHANGED)
 #mask_six_points_location = np.array([[39, 92], [311, 18], [586, 85], [593, 302], [304, 503], [27, 299]])
 mask_six_points_location = np.array([[139, 47], [311, 18], [497, 50], [443, 302], [304, 503], [164, 302]])
 
