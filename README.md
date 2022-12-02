@@ -48,9 +48,15 @@
 * 虚拟面具（python3 examples/AR_face.py）
 * 换脸（python3 examples/change_face.py）
 
+## 下一步目标
+* 增加人体关键点检测demo，东京奥运
+* 增加手势识别能力及demo
 
 ## 参考
+* https://github.com/google/mediapipe
 * https://github.com/spmallick/learnopencv
+* https://github.com/hpc203
+* https://github.com/PaddlePaddle/PaddleSeg/tree/release/2.7/contrib/PP-HumanSeg
 
-
-
+## 项目记录
+2022/12/2：人像分割增加PP-HumanSeg-v2模型，比起mediapipe分割效果更好
