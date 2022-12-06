@@ -26,7 +26,8 @@ while cap.isOpened():
     image = cv2.addWeighted(image, 0.8, lip_image, 0.2, gamma=0)
     
     cv2.imshow('Beautify Lip', image)
-    if cv2.waitKey(5) & 0xFF == 27:
+    if cv2.waitKey(1) & 0xFF == 27:
         break
 
 cap.release()
+cv2.destroyAllWindows()

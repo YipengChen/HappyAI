@@ -20,7 +20,8 @@ while cap.isOpened():
     results = style_transfer.inference(image)
     
     cv2.imshow('Face Detection', results)
-    if cv2.waitKey(5) & 0xFF == 27:
+    if cv2.waitKey(1) & 0xFF == 27:
         break
 
 cap.release()
+cv2.destroyAllWindows()

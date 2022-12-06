@@ -19,7 +19,8 @@ while cap.isOpened():
     image = face_detection.draw(image, results)
     
     cv2.imshow('Face Detection', image)
-    if cv2.waitKey(5) & 0xFF == 27:
+    if cv2.waitKey(1) & 0xFF == 27:
         break
 
 cap.release()
+cv2.destroyAllWindows()

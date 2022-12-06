@@ -19,7 +19,8 @@ while cap.isOpened():
     image = object_detection.draw(image, results, confidence_threshold=0.5)
     
     cv2.imshow("ObjectDetection", image)
-    if cv2.waitKey(5) & 0xFF == 27:
+    if cv2.waitKey(1) & 0xFF == 27:
         break
 
 cap.release()
+cv2.destroyAllWindows()

@@ -32,7 +32,8 @@ while cap.isOpened():
         image[vaild_mask >= 128] = transformed_mask_image[vaild_mask >= 128][:,:3]
     
     cv2.imshow('Mask Face', image)
-    if cv2.waitKey(5) & 0xFF == 27:
+    if cv2.waitKey(1) & 0xFF == 27:
         break
 
 cap.release()
+cv2.destroyAllWindows()

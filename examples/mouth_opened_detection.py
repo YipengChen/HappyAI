@@ -29,7 +29,8 @@ while cap.isOpened():
     cv2.putText(image, 'mouth opended count:{}'.format(mouth_opened_count), (50,100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 1)
     
     cv2.imshow('Face Mesh', image)
-    if cv2.waitKey(5) & 0xFF == 27:
+    if cv2.waitKey(1) & 0xFF == 27:
         break
 
 cap.release()
+cv2.destroyAllWindows()

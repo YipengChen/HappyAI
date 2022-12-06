@@ -20,7 +20,8 @@ while cap.isOpened():
     enlarged_image = face_mesh.eyes_enlarged(results, image, enlarge_factor=1)
 
     cv2.imshow('Eyes Enlarged', enlarged_image)
-    if cv2.waitKey(5) & 0xFF == 27:
+    if cv2.waitKey(1) & 0xFF == 27:
         break
 
 cap.release()
+cv2.destroyAllWindows()

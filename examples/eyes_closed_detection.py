@@ -27,7 +27,8 @@ while cap.isOpened():
     cv2.putText(image, 'eyes closed:{}'.format(eyes_closed_count), (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 1)
 
     cv2.imshow('Eyes Closed Detection', image)
-    if cv2.waitKey(5) & 0xFF == 27:
+    if cv2.waitKey(1) & 0xFF == 27:
         break
 
 cap.release()
+cv2.destroyAllWindows()

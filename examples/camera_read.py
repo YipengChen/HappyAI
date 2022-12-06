@@ -23,7 +23,7 @@ while cap.isOpened():
 
     image = cv2.flip(image, 1)
     cv2.imshow('Camera Read', image)
-    if cv2.waitKey(5) & 0xFF == 27:
+    if cv2.waitKey(1) & 0xFF == 27:
         break
 
     cur_time = time.time()
@@ -34,3 +34,4 @@ while cap.isOpened():
         print('平均读取帧率为{}'.format(int(queue_size/(cur_time-last_time))))
 
 cap.release()
+cv2.destroyAllWindows()
