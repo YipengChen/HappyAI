@@ -5,6 +5,22 @@ import onnxruntime
 
 
 # https://github.com/PaddlePaddle/PaddleSeg/tree/release/2.7/contrib/PP-HumanSeg
+
+# how to convert PP model to onnx
+# 1. 使用工具固定输入shape（可选）（https://github.com/PaddlePaddle/Paddle2ONNX/blob/develop/tools/paddle/README.md）
+# 1.1 python paddle_infer_shape.py --model_dir XXXX//portrait_pp_humansegv2_lite_256x144_inference_model_with_softmax  \
+#                              --model_filename model.pdmodel \
+#                              --params_filename model.pdiparams \
+#                              --save_dir new_model \
+#                              --input_shape_dict="{'x':[1,3,144,256]}"
+# 2. 使用paddle2onnx将paddle模型转为onnx (https://github.com/PaddlePaddle/PaddleSeg/blob/19351bab9a824a8f96e1c1b527ec2d7db21309c9/docs/model_export_onnx_cn.md)
+# 2.1. pip install paddlepaddle, paddleseg, paddle2onnx
+# 2.2. paddle2onnx --model_dir output \
+#             --model_filename model.pdmodel \
+#             --params_filename model.pdiparams \
+#             --opset_version 11 \
+#             --save_file output.onnx
+
 class SegmentationSelfiePPHunmanSegV2(object):
     def __init__(self):
         # Initialize model
