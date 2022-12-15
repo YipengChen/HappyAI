@@ -16,10 +16,10 @@ while cap.isOpened():
         continue
 
     image = cv2.flip(image, 1)
-    image = cv2.resize(image, (320, 180))
-    results = style_transfer.inference(image)
-    
-    cv2.imshow('Face Detection', results)
+    draw = cv2.resize(image.copy(), (320, 240))
+    draw = style_transfer.inference(draw)
+    draw = cv2.resize(draw, (image.shape[1], image.shape[0]))
+    cv2.imshow('Face Detection', draw)
     if cv2.waitKey(1) & 0xFF == 27:
         break
 

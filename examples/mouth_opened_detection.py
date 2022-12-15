@@ -25,8 +25,8 @@ while cap.isOpened():
         mouth_opened_count += 1
     last_mouth_opened_flag = cur_mouth_opened_flag
 
-    cv2.putText(image, 'mouth opended:{}'.format(cur_mouth_opened_flag), (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 1)
-    cv2.putText(image, 'mouth opended count:{}'.format(mouth_opened_count), (50,100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 1)
+    cv2.putText(image, 'mouth opended:{}'.format(cur_mouth_opened_flag), (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
+    cv2.putText(image, 'mouth opended count:{}'.format(mouth_opened_count), (50,100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
     
     cv2.imshow('Face Mesh', image)
     if cv2.waitKey(1) & 0xFF == 27:

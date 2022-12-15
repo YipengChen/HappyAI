@@ -24,7 +24,7 @@ while cap.isOpened():
     if cur_eyes_closed_flag and not last_eyes_closed_flag:
         eyes_closed_count += 1
     last_eyes_closed_flag = cur_eyes_closed_flag
-    cv2.putText(image, 'eyes closed:{}'.format(eyes_closed_count), (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255), 1)
+    cv2.putText(image, 'eyes closed:{}'.format(eyes_closed_count), (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
 
     cv2.imshow('Eyes Closed Detection', image)
     if cv2.waitKey(1) & 0xFF == 27:

@@ -31,9 +31,28 @@
 * 人像分割
 
 ## 体验demo
+|                          摄像头测试                          |                           人脸检测                           |                        人脸关键点检测                        |                        手部关键点检测                        |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/camera_read.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/face_detection.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/face_mesh.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/hand_detection.gif) |
+
+|                        人体关键点检测                        |                         人体综合检测                         |                       20类常用物体检测                       |                       80类常用物体检测                       |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/pose_detection.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/holistic_detection.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/object_detection_20class.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/object_detection_80class.gif) |
+
+|                           风格转换                           |                           嘴唇美妆                           |                           放大眼睛                           |                           闭眼检测                           |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/style_transfer.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/beautify_lip.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/eyes_enlarged.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/eyes_closed_detection.gif) |
+
+|                           张嘴检测                           |                           虚拟口罩                           |                         自拍人像分割                         |                           虚拟面具                           |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/mouth_opened_detection.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/mask_face.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/selfie_segmentation.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/AR_face.gif) |
+
+|                             换脸                             |               人物渲染-东京奥运会比赛项目图标                |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+| ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/change_face.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/Tokyo2020.gif) |
+
 * 摄像头测试 （python examples/camera_read.py）
 * 人脸检测（python examples/face_detection.py）
-![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/face_detection.gif)
 * 人脸关键点检测（python examples/face_mesh.py）
 * 手部关键点检测（python examples/hand_detection.py）
 * 人体关键点检测（python examples/pose_detection.py）
@@ -63,5 +82,6 @@
 * https://github.com/Kazuhito00/Tokyo2020-Pictogram-using-MediaPipe
 
 ## 项目记录
-2022/12/6: 增加人物渲染demo（东京奥运会比赛项目图标）
-2022/12/2：人像分割增加PP-HumanSeg-v2模型，比起mediapipe分割效果更好
+- 2022/12/16: 项目说明增加GIFs
+- 2022/12/6: 增加人物渲染demo（东京奥运会比赛项目图标）
+- 2022/12/2：人像分割增加PP-HumanSeg-v2模型，比起mediapipe分割效果更好
