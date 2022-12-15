@@ -22,8 +22,7 @@ while cap.isOpened():
     if upper_lip_location is not None and lower_lip_location is not None:
         lip_image = cv2.fillPoly(image.copy(), [upper_lip_location], (0, 0, 255))
         lip_image = cv2.fillPoly(lip_image, [lower_lip_location], (0, 0, 255))
-
-    image = cv2.addWeighted(image, 0.8, lip_image, 0.2, gamma=0)
+        image = cv2.addWeighted(image, 0.8, lip_image, 0.2, gamma=0)
     
     cv2.imshow('Beautify Lip', image)
     if cv2.waitKey(1) & 0xFF == 27:
