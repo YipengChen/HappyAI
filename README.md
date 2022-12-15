@@ -31,9 +31,12 @@
 * 人像分割
 
 ## 体验demo
+| 摄像头测试                                                   | 人脸检测                                                     | 人脸关键点检测                                               | 手部关键点检测                                               |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/face_detection.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/face_detection.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/face_detection.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/face_detection.gif) |
+
 * 摄像头测试 （python examples/camera_read.py）
 * 人脸检测（python examples/face_detection.py）
-![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/face_detection.gif)
 * 人脸关键点检测（python examples/face_mesh.py）
 * 手部关键点检测（python examples/hand_detection.py）
 * 人体关键点检测（python examples/pose_detection.py）
