@@ -22,16 +22,19 @@ while cap.isOpened():
         continue
 
     image = cv2.flip(image, 1)
-    cv2.imshow('Camera Read', image)
-    if cv2.waitKey(1) & 0xFF == 27:
-        break
 
     cur_time = time.time()
     time_queue.append(cur_time)
 
     if len(time_queue) > queue_size:
         last_time = time_queue.pop(0)
-        print('平均读取帧率为{}'.format(int(queue_size/(cur_time-last_time))))
+        fps = round(queue_size/(cur_time-last_time), 2)
+        print('平均读取帧率为{}'.format(fps))
+        image = cv2.putText(image, 'FPS:'+str(fps), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
+    cv2.imshow('Camera Read', image)
+    if cv2.waitKey(1) & 0xFF == 27:
+        break
 
 cap.release()
 cv2.destroyAllWindows()
