@@ -47,9 +47,9 @@
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
 | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/mouth_opened_detection.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/mask_face.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/selfie_segmentation.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/AR_face.gif) |
 
-|                             换脸                             |               人物渲染-东京奥运会比赛项目图标                |
-| :----------------------------------------------------------: | :----------------------------------------------------------: |
-| ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/change_face.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/Tokyo2020.gif) |
+|                             换脸                             | 人物渲染-东京奥运会比赛项目图标                              |                           手势识别                           |
+| :----------------------------------------------------------: | ------------------------------------------------------------ | :----------------------------------------------------------: |
+| ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/change_face.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/Tokyo2020.gif) | ![image](https://github.com/YipengChen/HappyAI/blob/main/docs/gifs/hand_gesture_recognition.gif) |
 
 * 摄像头测试 （python examples/camera_read.py）
 * 人脸检测（python examples/face_detection.py）
@@ -69,10 +69,12 @@
 * 虚拟面具（python examples/AR_face.py）
 * 换脸（python examples/change_face.py）
 * 人物渲染-东京奥运会比赛项目图标（python examples/Tokyo2020.py）
+* 手势识别（python examples/hand_gesture_recognition.py）
 
 ## 下一步目标
-* 增加手势识别能力及demo
-* 增加OCR能力及demo
+- [x] 增加手势识别能力及demo
+- [ ] 增加OCR能力及demo
+- [ ] 增加双人换脸demo
 
 ## 参考
 * https://github.com/google/mediapipe
@@ -80,8 +82,10 @@
 * https://github.com/hpc203
 * https://github.com/PaddlePaddle/PaddleSeg/tree/release/2.7/contrib/PP-HumanSeg
 * https://github.com/Kazuhito00/Tokyo2020-Pictogram-using-MediaPipe
+* https://github.com/YipengChen/TrainAndDeployDNNClassficationModel
 
 ## 项目记录
+- 2022/12/18: 增加手势识别接口与Demo
 - 2022/12/16: 项目说明增加GIFs
 - 2022/12/6: 增加人物渲染demo（东京奥运会比赛项目图标）
 - 2022/12/2：人像分割增加PP-HumanSeg-v2模型，比起mediapipe分割效果更好

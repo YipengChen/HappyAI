@@ -61,3 +61,16 @@ def warp_triangle(image1, image2, triangle1, triangle2):
 def find_convex_hull_points(points):
     hull_points = cv2.convexHull(np.float32(points[None, :, :]), clockwise=False, returnPoints=True)
     return hull_points.squeeze()
+
+
+def overlap_image(raw_image, target_image, location):
+    x, y, w, h = location
+    raw_image_height, raw_image_width = raw_image.shape[0], raw_image.shape[1]
+    target_image = cv2.resize(target_image.copy(), (h, w))
+    raw_left_up = min(max(0, x), raw_image_width), min(max(0, y), raw_image_height)
+    raw_right_down = min(max(0, x+w), raw_image_width), min(max(0, y+h), raw_image_height)
+    target_left_up = raw_left_up[0] - x, raw_left_up[1] - y
+    taget_right_down = raw_right_down[0] - x, raw_right_down[1] - y
+    raw_image = raw_image.copy()
+    raw_image[raw_left_up[1]:raw_right_down[1], raw_left_up[0]:raw_right_down[0], :] = target_image[target_left_up[1]:taget_right_down[1], target_left_up[0]:taget_right_down[0], :]
+    return raw_image
