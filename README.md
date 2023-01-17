@@ -83,8 +83,10 @@
 * https://github.com/PaddlePaddle/PaddleSeg/tree/release/2.7/contrib/PP-HumanSeg
 * https://github.com/Kazuhito00/Tokyo2020-Pictogram-using-MediaPipe
 * https://github.com/YipengChen/TrainAndDeployDNNClassficationModel
+* https://github.com/PeterL1n/RobustVideoMatting
 
 ## 项目记录
+- 2023/1/17：增加RobustVideoMatting分割模型
 - 2022/12/18: 增加手势识别接口与Demo
 - 2022/12/16: 项目说明增加GIFs
 - 2022/12/6: 增加人物渲染demo（东京奥运会比赛项目图标）

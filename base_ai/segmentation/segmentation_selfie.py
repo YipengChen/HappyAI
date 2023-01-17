@@ -72,5 +72,53 @@ class SegmentationSelfieMediapipe(object):
         return output_image
 
 
-class SegmentationSelfie(SegmentationSelfiePPHunmanSegV2):
+# https://github.com/PeterL1n/RobustVideoMatting
+class SegmentationSelfieRobustVideoMatting(object):
+
+    def __init__(self, threshold=0.5):
+        # Initialize model
+        self.onnx_session = onnxruntime.InferenceSession("./models/rvm_mobilenetv3_fp32.onnx")
+        self.downsample_ratio = np.array([0.8], dtype=np.float32)  # dtype always FP32
+        self.rec = [ np.zeros([1, 1, 1, 1], dtype=np.float32) ] * 4  # Must match dtype of the model.
+        self.input_height = 480
+        self.input_width = 640
+        self.threshold = threshold
+
+    def reset(self):
+        self.rec = [ np.zeros([1, 1, 1, 1], dtype=np.float32) ] * 4  # Must match dtype of the model.
+
+    def inference(self, image):
+        # preprocess
+        input_image = image.copy()
+        input_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2RGB)
+        input_image = cv2.resize(input_image, (self.input_width, self.input_height))
+        input_image = input_image.transpose(2, 0, 1)
+        input_image = np.array(input_image[None, :, :, :], dtype=np.float32)/255.0
+        # onnxruntime
+        fgr, pha, *rec = self.onnx_session.run([], {
+            'src': input_image,
+            'r1i': self.rec[0],
+            'r2i': self.rec[1],
+            'r3i': self.rec[2],
+            'r4i': self.rec[3],
+            'downsample_ratio': self.downsample_ratio
+        })
+        self.rec = rec
+        # postprocess
+        segmentation_map = pha.squeeze()
+        segmentation_map = cv2.resize(segmentation_map, (image.shape[1], image.shape[0]))
+        segmentation_map[segmentation_map>=self.threshold] = 1
+        segmentation_map[segmentation_map<self.threshold] = 0
+        segmentation_map = segmentation_map.astype(np.uint8)
+        return segmentation_map
+
+    def draw(self, image, results):
+        image = image.copy()
+        condition = np.stack((results,) * 3, axis=-1)
+        output_image = np.uint8(condition * image)
+        return output_image
+
+
+
+class SegmentationSelfie(SegmentationSelfieRobustVideoMatting):
     pass
