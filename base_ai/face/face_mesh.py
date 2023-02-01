@@ -5,9 +5,9 @@ import numpy as np
 # Method_1: mediapipe, https://github.com/google/mediapipe
 class FaceMeshMediaPipe(object):
 
-    def __init__(self):
+    def __init__(self, max_num_faces=1):
         self.static_image_mode = False
-        self.max_num_faces = 1
+        self.max_num_faces = max_num_faces
         self.refine_landmarks = True
         self.min_detection_confidence = 0.5
         self.min_tracking_confidence = 0.5
@@ -95,6 +95,22 @@ class FaceMeshMediaPipe(object):
             else:
                 face_landmarks = np.transpose(np.stack((x, y))) * [image_shape[1], image_shape[0]]
             return np.around(face_landmarks,0)
+        return None
+
+    def get_all_locations(self, results, image_shape, has_z=False):
+        face_landmarks = []
+        if results.multi_face_landmarks:
+            for landmarks in results.multi_face_landmarks:
+                x = [landmark.x for landmark in landmarks.landmark]
+                y = [landmark.y for landmark in landmarks.landmark]
+                if has_z:
+                    z = [landmark.z for landmark in landmarks.landmark]
+                    single_face_landmarks = np.transpose(np.stack((x, y, z))) * [image_shape[1], image_shape[0], 1000]
+                else:
+                    single_face_landmarks = np.transpose(np.stack((x, y))) * [image_shape[1], image_shape[0]]
+                single_face_landmarks = np.around(single_face_landmarks, 0)
+                face_landmarks.append(single_face_landmarks)
+            return face_landmarks
         return None
 
     def mouth_opened_detection(self, results, image_shape, threshold=0.2):

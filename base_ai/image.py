@@ -27,11 +27,15 @@ def calculate_delaunay_triangles_index(rect, points):
 def warp_triangle(image1, image2, triangle1, triangle2):
     # Find bounding rectangle for each triangle, (x, y, width, height)
     rect1 = cv2.boundingRect(np.float32([triangle1]))
+    rect1_image = image1[rect1[1]:rect1[1] + rect1[3], rect1[0]:rect1[0] + rect1[2]]
+
+    if rect1_image.shape[0] == 0 or rect1_image.shape[1] == 0:
+        return
+
     rect2 = cv2.boundingRect(np.float32([triangle2]))
     rect2_vaild_x1, rect2_vaild_y1 = min(max(rect2[0], 0), image2.shape[1]), min(max(rect2[1], 0), image2.shape[0])
     rect2_vaild_x2, rect2_vaild_y2 = min(max(rect2[0]+rect2[2], 0), image2.shape[1]), min(max(rect2[1]+rect2[3], 0), image2.shape[0])
     rect2_width, rect2_height = rect2_vaild_x2-rect2_vaild_x1, rect2_vaild_y2-rect2_vaild_y1
-    rect1_image = image1[rect1[1]:rect1[1] + rect1[3], rect1[0]:rect1[0] + rect1[2]]
 
     # Offset points by left top corner of the respective rectangles
     norm_triangle1 = []

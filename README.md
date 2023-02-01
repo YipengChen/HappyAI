@@ -70,11 +70,12 @@
 * 换脸（python examples/change_face.py）
 * 人物渲染-东京奥运会比赛项目图标（python examples/Tokyo2020.py）
 * 手势识别（python examples/hand_gesture_recognition.py）
+* 双人换脸（python examples/change_two_faces.py）
 
 ## 下一步目标
 - [x] 增加手势识别能力及demo
 - [ ] 增加OCR能力及demo
-- [ ] 增加双人换脸demo
+- [x] 增加双人换脸demo
 
 ## 参考
 * https://github.com/google/mediapipe
@@ -86,6 +87,7 @@
 * https://github.com/PeterL1n/RobustVideoMatting
 
 ## 项目记录
+- 2023/2/1：增加双人换脸demo
 - 2023/1/17：增加RobustVideoMatting分割模型
 - 2022/12/18: 增加手势识别接口与Demo
 - 2022/12/16: 项目说明增加GIFs
