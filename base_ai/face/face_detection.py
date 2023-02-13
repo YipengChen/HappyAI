@@ -3,7 +3,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import onnxruntime
-from .detect_utils import overlap_similarity
+from ..detect_utils import overlap_similarity
 
 # Method 1: mediapipe, https://github.com/google/mediapipe
 class FaceDetectionMediaPipe(object):
@@ -32,69 +32,50 @@ class FaceDetectionMediaPipe(object):
 class FaceDetectionMediaPipeOnnx(object):
 
     def __init__(self):
-
         self.onnx_session = onnxruntime.InferenceSession(os.path.join(os.path.dirname(__file__), "face_detection_short_range.onnx"))
         self.anchors = np.load(os.path.join(os.path.dirname(__file__), 'anchors.npy'))
-        print(self.anchors)
-        self.input_height = 128
-        self.input_width = 128
+        self.input_height, self.input_width = 128, 128
         self.num_anchors = 896
-        self.x_scale = 128.0
-        self.y_scale = 128.0
-        self.h_scale = 128.0
-        self.w_scale = 128.0
+        self.x_scale, self.y_scale, self.h_scale, self.w_scale = 128.0, 128.0, 128.0, 128.0
         self.score_clipping_thresh = 100.0
         self.min_score_thresh = 0.5
         self.min_suppression_threshold = 0.3
 
-    def preprocess(self, image):
+    def _preprocess(self, image):
         input_image = image.copy()
         input_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2RGB)
         input_image = cv2.resize(input_image, (self.input_width, self.input_height))
         input_image = np.array(input_image[None, :, :, :], dtype=np.float32)/127.5 - 1
         return input_image
 
-    def inference(self, image):
-        image = self.preprocess(image)
-        regressors, classificators = self.onnx_session.run(['regressors', 'classificators'], {'input':image})
-        # Postprocess the raw predictions:
+    def _postprocess(self, regressors, classificators, image_shape):
         detections = self._tensors_to_detections(regressors, classificators, self.anchors)
-        # Non-maximum suppression to remove overlapping detections:
-        filtered_detections = []
-        for i in range(len(detections)):
-            faces = self._weighted_non_max_suppression(detections[i])
-            filtered_detections.append(faces)
-        return filtered_detections
-
+        faces = self._weighted_non_max_suppression(detections[0])
+        faces = [self._decode_face(face, image_shape) for face in faces]
+        return faces
+    
+    def inference(self, image):
+        input_image = self._preprocess(image)
+        regressors, classificators = self.onnx_session.run(['regressors', 'classificators'], {'input':input_image})
+        return self._postprocess(regressors, classificators, image.shape)
+        
     def draw(self, image, results):
         draw_image = image.copy()
-        for filtered_detection in results:
-            for face in filtered_detection:
-                xmin = int(face[0] * image.shape[1])
-                ymin = int(face[1] * image.shape[0])
-                xmax = int(face[2] * image.shape[1])
-                ymax = int(face[3] * image.shape[0])
-                #print(xmin, ymin, xmax, ymax)
-                p1_x = int(face[4] * image.shape[1])
-                p1_y = int(face[5] * image.shape[0])
-                p2_x = int(face[6] * image.shape[1])
-                p2_y = int(face[7] * image.shape[0])
-                p3_x = int(face[8] * image.shape[1])
-                p3_y = int(face[9] * image.shape[0])
-                p4_x = int(face[10] * image.shape[1])
-                p4_y = int(face[11] * image.shape[0])
-                p5_x = int(face[12] * image.shape[1])
-                p5_y = int(face[13] * image.shape[0])
-                p6_x = int(face[14] * image.shape[1])
-                p6_y = int(face[15] * image.shape[0])
-                draw_image = cv2.rectangle(draw_image, (xmin, ymin), (xmax, ymax), (255, 0, 0))
-                draw_image = cv2.circle(draw_image, (p1_x, p1_y), 3, (255, 0, 0), 1)
-                draw_image = cv2.circle(draw_image, (p2_x, p2_y), 3, (255, 0, 0), 1)
-                draw_image = cv2.circle(draw_image, (p3_x, p3_y), 3, (255, 0, 0), 1)
-                draw_image = cv2.circle(draw_image, (p4_x, p4_y), 3, (255, 0, 0), 1)
-                draw_image = cv2.circle(draw_image, (p5_x, p5_y), 3, (255, 0, 0), 1)
-                draw_image = cv2.circle(draw_image, (p6_x, p6_y), 3, (255, 0, 0), 1)
+        for face in results:
+            draw_image = cv2.rectangle(draw_image, (face[0], face[1]), (face[2], face[3]), (255, 0, 0))
+            draw_image = cv2.circle(draw_image, (face[4], face[5]), 3, (255, 0, 0), 1)
+            draw_image = cv2.circle(draw_image, (face[6], face[7]), 3, (255, 0, 0), 1)
+            draw_image = cv2.circle(draw_image, (face[8], face[9]), 3, (255, 0, 0), 1)
+            draw_image = cv2.circle(draw_image, (face[10], face[11]), 3, (255, 0, 0), 1)
+            draw_image = cv2.circle(draw_image, (face[12], face[13]), 3, (255, 0, 0), 1)
+            draw_image = cv2.circle(draw_image, (face[14], face[15]), 3, (255, 0, 0), 1)
         return draw_image
+
+    def _decode_face(self, face, image_shape):
+        face = np.array(face[:16])
+        face[::2] = face[::2] * image_shape[1]
+        face[1::2] = face[1::2] * image_shape[0]
+        return np.int32(face)
 
     def _decode_boxes(self, raw_boxes, anchors):
         """Converts the predictions into actual coordinates using
@@ -146,7 +127,7 @@ class FaceDetectionMediaPipeOnnx(object):
         return output_detections
 
     def _weighted_non_max_suppression(self, detections):
-        if len(detections) == 0: return []
+        if len(detections) == 0: return np.array([])
 
         output_detections = []
 
@@ -186,7 +167,7 @@ class FaceDetectionMediaPipeOnnx(object):
 
 
 # Choose a method
-class FaceDetection(FaceDetectionMediaPipe):
+class FaceDetection(FaceDetectionMediaPipeOnnx):
     pass
 
 
