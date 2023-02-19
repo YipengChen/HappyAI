@@ -41,15 +41,15 @@ class HandDetectionMediaPipe(object):
         return multi_hand_landmarks
 
 
-# Method 2: mediapipe, https://github.com/google/mediapipe (v0.8.8), convert tflite to onnx and use onnx runtime
+# Method 2: mediapipe, https://github.com/google/mediapipe (v0.9.0), convert tflite to onnx and use onnx runtime
 class HandDetectionMediaPipeOnnx(object):
 
     def __init__(self):
-        self.onnx_session = onnxruntime.InferenceSession(os.path.join(os.path.dirname(__file__), "palm_detection.onnx"))
+        self.onnx_session = onnxruntime.InferenceSession(os.path.join(os.path.dirname(__file__), "palm_detection_lite.onnx"))
         self.anchors = np.load(os.path.join(os.path.dirname(__file__), 'anchors.npy'))
-        self.input_height, self.input_width = 128, 128
-        self.num_anchors = 896
-        self.x_scale, self.y_scale, self.h_scale, self.w_scale = 128.0, 128.0, 128.0, 128.0
+        self.input_height, self.input_width = 192, 192
+        self.num_anchors = 2016
+        self.x_scale, self.y_scale, self.h_scale, self.w_scale = 192.0, 192.0, 192.0, 192.0
         self.score_clipping_thresh = 100.0
         self.min_score_thresh = 0.5
         self.min_suppression_threshold = 0.3
@@ -58,7 +58,7 @@ class HandDetectionMediaPipeOnnx(object):
         input_image = image.copy()
         input_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2RGB)
         input_image = cv2.resize(input_image, (self.input_width, self.input_height))
-        input_image = np.array(input_image[None, :, :, :], dtype=np.float32)/127.5 - 1
+        input_image = np.array(input_image[None, :, :, :], dtype=np.float32)/255.0
         return input_image
 
     def _postprocess(self, regressors, classificators, image_shape):
@@ -69,7 +69,7 @@ class HandDetectionMediaPipeOnnx(object):
     
     def inference(self, image):
         input_image = self._preprocess(image)
-        regressors, classificators = self.onnx_session.run(['regressors', 'classificators'], {'input':input_image})
+        regressors, classificators = self.onnx_session.run(['Identity', 'Identity_1'], {'input_1':input_image})
         return self._postprocess(regressors, classificators, image.shape)
         
     def draw(self, image, results):

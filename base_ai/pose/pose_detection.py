@@ -56,11 +56,13 @@ class PoseDetectionMediaPipeOnnx(object):
     def draw(self, image, results):
         draw_image = image.copy()
         for face in results:
-            draw_image = cv2.rectangle(draw_image, (face[0], face[1]), (face[2], face[3]), (255, 0, 0))
-            draw_image = cv2.circle(draw_image, (face[4], face[5]), 3, (255, 0, 0), 1)
-            draw_image = cv2.circle(draw_image, (face[6], face[7]), 3, (255, 0, 0), 1)
-            draw_image = cv2.circle(draw_image, (face[8], face[9]), 3, (255, 0, 0), 1)
-            draw_image = cv2.circle(draw_image, (face[10], face[11]), 3, (255, 0, 0), 1)
+            #draw_image = cv2.rectangle(draw_image, (face[0], face[1]), (face[2], face[3]), (255, 0, 0))
+            #draw_image = cv2.circle(draw_image, (face[4], face[5]), 3, (255, 0, 0), 1)
+            #draw_image = cv2.circle(draw_image, (face[6], face[7]), 3, (255, 0, 0), 1)
+            height = face[7] - face[5]
+            draw_image = cv2.rectangle(draw_image, (face[0], face[5] - height), (face[2], face[5] + height), (255, 0, 0))
+            #draw_image = cv2.circle(draw_image, (face[8], face[9]), 3, (255, 0, 0), 1)
+            #draw_image = cv2.circle(draw_image, (face[10], face[11]), 3, (255, 0, 0), 1)
         return draw_image
 
     def _decode_face(self, face, image_shape):
