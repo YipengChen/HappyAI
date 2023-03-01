@@ -234,6 +234,47 @@ class FaceMeshMediaPipe(object):
         return np.linalg.norm(point1-point2)
 
 
+    def calculation_head_pose(self, results, image_shape):
+        landmarks = self.get_all_location(results, image_shape, has_z=True)
+        if landmarks is None:
+            return 0, 0, 0
+        
+        key_landmarks_index = [1, 33, 61, 199, 291, 263, 291]
+
+        face_2d, face_3d = landmarks[key_landmarks_index, :2], landmarks[key_landmarks_index, :]
+        face_2d = face_2d.astype(np.float64)
+        face_3d = face_3d.astype(np.float64)
+        face_3d[:, 2] = face_3d[:, 2] / 1000
+
+        focal_length = 1 * image_shape[1]
+        cam_matrix = np.array([
+            [focal_length, 0, image_shape[0]/2],
+            [0, focal_length, image_shape[1]/2],
+            [0, 0, 1]
+        ])
+
+        dist_matrix = np.zeros((4, 1), dtype=np.float64)
+        success, rot_vec, trans_vec = cv2.solvePnP(face_3d, face_2d, cam_matrix, dist_matrix)
+
+        rmat, jac = cv2.Rodrigues(rot_vec)
+
+        angles, mrxR, mtxQ, Qx, Qy, Qz = cv2.RQDecomp3x3(rmat)
+
+        x = angles[0]*360
+        y = angles[1]*360
+        z = angles[2]*360
+        
+        return x, y, z
+
+
+    def get_nose_location(self, results, image_shape):
+        landmarks = self.get_all_location(results, image_shape, has_z=False)
+        if landmarks is None:
+            return 0, 0
+
+        nose_2d = landmarks[1, :2]
+        return nose_2d
+
 # Choose a method
 class FaceMesh(FaceMeshMediaPipe):
     pass
